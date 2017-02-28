@@ -399,14 +399,6 @@ NSString *RLHighlightedBackgroundCornerRadius = @"HighlightedBackgroundCornerRad
 - (void)removeAttributeForTruncatedRange {
 	NSDictionary *patternAttributes = [self.rangeAttributeDictionary objectForKey:[NSValue valueWithRange:self.truncatedPatternRange]];
 	[patternAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		NSRange availableRange = NSMakeRange(self.truncatedPatternRange.location, self.textStorage.length - self.attributedTruncationToken.length - self.truncatedPatternRange.location);
-		[self.textStorage removeAttributeWithBoundsCheck:key range:availableRange];
-	}];
-}
-
-- (void)removeAttributeForTruncatedRange {
-	NSDictionary *patternAttributes = [self.rangeAttributeDictionary objectForKey:[NSValue valueWithRange:self.truncatedPatternRange]];
-	[patternAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		NSInteger truncatedPatternRangeLocation = self.truncatedPatternRange.location;
 		if(truncatedPatternRangeLocation + self.attributedTruncationToken.length > self.textStorage.length) {
 			truncatedPatternRangeLocation = self.textStorage.length - self.attributedTruncationToken.length;
