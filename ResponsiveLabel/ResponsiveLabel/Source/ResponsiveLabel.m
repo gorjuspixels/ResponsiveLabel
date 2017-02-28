@@ -404,6 +404,19 @@ NSString *RLHighlightedBackgroundCornerRadius = @"HighlightedBackgroundCornerRad
 	}];
 }
 
+- (void)removeAttributeForTruncatedRange {
+	NSDictionary *patternAttributes = [self.rangeAttributeDictionary objectForKey:[NSValue valueWithRange:self.truncatedPatternRange]];
+	[patternAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		NSInteger truncatedPatternRangeLocation = self.truncatedPatternRange.location;
+		if(truncatedPatternRangeLocation + self.attributedTruncationToken.length > self.textStorage.length) {
+			truncatedPatternRangeLocation = self.textStorage.length - self.attributedTruncationToken.length;
+    		}
+
+    		NSRange availableRange = NSMakeRange(truncatedPatternRangeLocation, self.textStorage.length - self.attributedTruncationToken.length - truncatedPatternRangeLocation);
+    		[self.textStorage removeAttributeWithBoundsCheck:key range:availableRange];
+	}];
+}
+
 - (void)addAttributesToTruncationToken {
 	NSRange truncationRange = [self rangeOfTruncationToken];
 	//Apply attributes to the truncation token
